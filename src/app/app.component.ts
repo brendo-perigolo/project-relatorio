@@ -68,7 +68,7 @@ export class AppComponent {
     this.listaTreinamento = itemSelecionado;
   }
 
-  copyToClipboard() {
+  ccopyToClipboard() {
     const configuracaoText = this.configuracao
       .filter((item) => item.checked)
       .map((item) => `• ${item.label}`)
@@ -93,8 +93,12 @@ export class AppComponent {
 
     // Copie o texto para o clipboard
     navigator.clipboard.writeText(combinedText).then(
-      () => alert("Texto copiado para o clipboard!"),
+      () => alert("Texto copiado!"),
       (err) => console.error("Erro ao copiar texto: ", err)
     );
+  }
+
+  teste() {
+    alert("teste");
   }
 }
