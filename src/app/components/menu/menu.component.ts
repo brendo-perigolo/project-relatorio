@@ -1,4 +1,5 @@
 import { CommonModule } from "@angular/common";
+import { HtmlParser } from "@angular/compiler";
 import { Component, Input } from "@angular/core";
 
 @Component({
