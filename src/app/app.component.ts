@@ -64,15 +64,26 @@ export class AppComponent {
       ${this.listaTreinamento.join("\n")}
     `;
   }
+  copyToClipboard() {
+    // Filtra e formata os itens da configuração
+    const configuracaoText = this.configuracao
+      .filter((item) => item.checked)
+      .map((item) => `• ${item.label}`)
+      .join("\n");
 
-  copiarParaClipboard() {
-    const texto = this.textoParaCopiar;
-    const textarea = document.createElement("textarea");
-    textarea.value = texto;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-    alert("Texto copiado para a área de transferência!");
+    // Filtra e formata os itens de treinamento
+    const treinamentoText = this.treinamentoFiscal
+      .filter((item) => item.checked)
+      .map((item) => `• ${item.label}`)
+      .join("\n");
+
+    // Cria o texto combinado com formatação adequada
+    const combinedText = `Configurações Executadas:\n${configuracaoText}\n\nTreinamento Repassado:\n${treinamentoText}`;
+
+    // Copia o texto formatado para o clipboard
+    navigator.clipboard.writeText(combinedText).then(
+      () => alert("Texto copiado para o clipboard!"),
+      (err) => console.error("Erro ao copiar texto: ", err)
+    );
   }
 }
