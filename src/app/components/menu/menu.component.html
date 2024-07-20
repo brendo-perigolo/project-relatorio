@@ -1,0 +1,19 @@
+<div class="conteudo">
+  <div class="d-inline-flex gap-1">
+    <a
+      class="btn btn-primary btn-menu"
+      [attr.data-bs-toggle]="'collapse'"
+      [attr.href]="'#' + panelId"
+      role="button"
+      aria-expanded="false"
+      [attr.aria-controls]="panelId"
+    >
+      {{ linkText }}
+    </a>
+  </div>
+  <div class="collapse" [id]="panelId">
+    <div class="card card-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
