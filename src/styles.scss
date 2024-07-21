@@ -5,3 +5,9 @@
   margin: 0;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
+
+button {
+  box-shadow: 6px 7px 5px -1px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 6px 7px 5px -1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 6px 7px 5px -1px rgba(0, 0, 0, 0.4);
+}

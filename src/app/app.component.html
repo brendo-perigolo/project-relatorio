@@ -1,4 +1,4 @@
-<div class="container">
+<div class="contain">
   <div class="conteudo">
     <h2>Ordem de Serviço</h2>
     <div>
@@ -31,7 +31,10 @@
           linkText='<i class="fa-solid fa-store"></i>Treinamento Gerencial '
           content="teste"
         >
-          <app-checks></app-checks>
+          <app-checks
+            [items]="treinamentoGerencial"
+            (selectionChanged)="atualizarTreinamento($event)"
+          ></app-checks>
         </app-menu>
       </div>
       <div>
@@ -49,7 +52,7 @@
     </div>
 
     <div class="obs">
-      <h5>Observacao Adicionais</h5>
+      <h5>Observaçäo Adicionais</h5>
       <textarea
         class="form-control"
         id="exampleFormControlTextarea1"
@@ -80,10 +83,10 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Relatorio Tecnico</h1>
+            <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Relatório Técnico</h1>
             <button
               type="button"
               class="btn-close"

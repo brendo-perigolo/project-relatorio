@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 3px;
 
   .menu {
     width: 100%;
@@ -24,5 +23,11 @@
   .obs {
     width: 100%;
     padding: 10px;
+  }
+
+  button {
+    box-shadow: 5px 6px 10px -3px rgba(0, 0, 0, 0.64);
+    -webkit-box-shadow: 5px 6px 10px -3px rgba(0, 0, 0, 0.64);
+    -moz-box-shadow: 5px 6px 10px -3px rgba(0, 0, 0, 0.64);
   }
 }
