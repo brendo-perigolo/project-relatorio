@@ -21,12 +21,13 @@ export class PdfServiceService {
   async editPdf(pdfDoc: PDFDocument, text: string): Promise<Uint8Array> {
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
+    const scale = 0.5;
 
     // Add text to the first page
     firstPage.drawText(text, {
       x: 50,
-      y: 430,
-      size: 12,
+      y: 480,
+      size: 10,
       color: rgb(0, 0, 0),
     });
     if (this.signatureImage) {
@@ -37,7 +38,7 @@ export class PdfServiceService {
       const { width, height } = signatureImageEmbed;
 
       const xPosition = 320; // Ajuste a posição X conforme necessário
-      const yPosition = 60; // Ajuste a posição Y conforme necessário
+      const yPosition = 95; // Ajuste a posição Y conforme necessário
 
       // Reduz o tamanho da assinatura
       const scale = 0.4; // Reduza o tamanho para 50% do original
