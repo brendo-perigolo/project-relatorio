@@ -21,15 +21,32 @@ export class PdfServiceService {
   async editPdf(pdfDoc: PDFDocument, text: string): Promise<Uint8Array> {
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
-    const scale = 0.5;
+
+    firstPage.drawRectangle({
+      x: 40,
+      y: 150,
+      width: 800,
+      height: 250,
+      color: rgb(1, 1, 1),
+    });
 
     // Add text to the first page
-    firstPage.drawText(text, {
-      x: 50,
-      y: 480,
-      size: 10,
-      color: rgb(0, 0, 0),
+    const startY = 400;
+    const lineHeight = 12; // Ajuste o espaçamento entre linhas conforme necessário
+    const textSize = 9; // Tamanho da fonte
+
+    // Divide o texto em linhas com base no tamanho da página e no espaçamento
+    const lines = text.split("\n"); // Supondo que o texto esteja separado por novas linhas
+
+    // Adiciona cada linha de texto
+    lines.forEach((line, index) => {
+      firstPage.drawText(line, {
+        x: 50,
+        y: startY - index * lineHeight, // Ajusta a posição y para cada linha
+        size: textSize,
+      });
     });
+
     if (this.signatureImage) {
       // Adiciona a assinatura ao PDF
       const signatureImageBytes = await fetch(this.signatureImage).then((res) => res.arrayBuffer());
