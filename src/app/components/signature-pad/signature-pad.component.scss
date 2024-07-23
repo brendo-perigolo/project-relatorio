@@ -13,7 +13,7 @@ canvas {
 .btn {
   display: flex;
   flex-direction: row;
-}
-button {
-  margin: 5px;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-right: 10px;
 }

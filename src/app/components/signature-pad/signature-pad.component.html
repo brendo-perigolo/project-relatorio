@@ -2,11 +2,15 @@
   <h5>Assinatura</h5>
   <canvas #signaturePad></canvas>
   <div class="btn">
-    <button class="btn btn-danger" (click)="clear()">
-      <i class="fa-solid fa-trash-can"></i>
-    </button>
-    <button class="btn btn-primary" (click)="save()">
-      <i class="fa-solid fa-cloud-arrow-up"></i>
-    </button>
+    <div>
+      <button class="btn btn-danger btn-sm" (click)="clear()">
+        <i class="fa-solid fa-trash-can"></i> Limpar
+      </button>
+    </div>
+    <div>
+      <button class="btn btn-primary btn-sm" (click)="save()">
+        <i class="fa-solid fa-cloud-arrow-up"></i> Salvar
+      </button>
+    </div>
   </div>
 </div>
