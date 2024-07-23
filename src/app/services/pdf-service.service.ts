@@ -24,9 +24,9 @@ export class PdfServiceService {
 
     firstPage.drawRectangle({
       x: 40,
-      y: 120,
+      y: 140,
       width: 800,
-      height: 300,
+      height: 350,
       color: rgb(1, 1, 1),
     });
 
