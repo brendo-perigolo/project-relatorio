@@ -1,9 +1,17 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { MenuComponent } from "./components/menu/menu.component";
 import { ChecksComponent } from "./components/checks/checks.component";
 import { SignaturePadComponent } from "./components/signature-pad/signature-pad.component";
 import { FormsModule } from "@angular/forms";
+import {
+  configuracao,
+  treinamentoCheff,
+  treinamentoFiscal,
+  treinamentoGerencial,
+  treinamentoRHID,
+} from "./Data/configData";
+import { PdfServiceService } from "./services/pdf-service.service";
 
 @Component({
   selector: "app-root",
@@ -13,96 +21,129 @@ import { FormsModule } from "@angular/forms";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
+  private pdfService = inject(PdfServiceService);
+
   obs_adc: string = "";
-
-  configuracao = [
-    { id: "check1", label: "EsistemLoja com certificado.", checked: false },
-    { id: "check2", label: "EsistemLoja e Nfce com certificado.", checked: false },
-    { id: "check3", label: "Esistem Nfce com CSC.", checked: false },
-    { id: "check4", label: "Esistem Loja com gerencial.", checked: false },
-    { id: "check5", label: "Movimentacoes e Venda Rapida", checked: false },
-    { id: "check6", label: "Esistem Loja Financeiro.", checked: false },
-    { id: "check7", label: "Instalado equipamento no local.", checked: false },
-    { id: "check8", label: "Configurado equipamento na rede.", checked: false },
-    { id: "check9", label: "Configurado IDCloud.", checked: false },
-  ];
-  treinamentoFiscal = [
-    { id: "check10", label: "Cadastro de Cliente.", checked: false },
-    { id: "check11", label: "Cadastro de Produto com perfil e CEST.", checked: false },
-    { id: "check12", label: "Baixar e Importar XMLs.", checked: false },
-    { id: "check13", label: "Inclusão de Fator de Conversão.", checked: false },
-    { id: "check14", label: "Emissão de NFe.", checked: false },
-    { id: "check15", label: "Emissão de NFCe e transmitir Off-line.", checked: false },
-    { id: "check16", label: "Importação de DAV para NFe ou NFCe.", checked: false },
-    { id: "check17", label: "Retirar Relatórios.", checked: false },
-  ];
-
-  treinamentoGerencial = [
-    { id: "check18", label: "Cadastro de Cliente.", checked: false },
-    { id: "check19", label: "Cadastro de Produto manual.", checked: false },
-    { id: "check20", label: "Inclusão de movimentação de estoque.", checked: false },
-    { id: "check21", label: "Inclusão de movimentação de venda rápida.", checked: false },
-    { id: "check22", label: "Gerenciamento e fluxo de caixa.", checked: false },
-    { id: "check23", label: "Gerenciar Títulos a Receber.", checked: false },
-    { id: "check24", label: "Gerenciar Títulos a Pagar.", checked: false },
-  ];
-
-  treinamentoRHID = [
-    { id: "check25", label: "Cadastro de Horários.", checked: false },
-    { id: "check26", label: "Cadastro de Horários de Escala.", checked: false },
-    { id: "check27", label: "Cadastro de Funcionários.", checked: false },
-    { id: "check28", label: "Cadastro de Biometria.", checked: false },
-    { id: "check29", label: "Verificação e apuração de Ponto.", checked: false },
-    { id: "check30", label: "Retirada de relatórios de Ponto.", checked: false },
-    { id: "check31", label: "Troca de bobina.", checked: false },
-  ];
-
   listaConfig: string[] = [];
   listaTreinamento: string[] = [];
+
+  // PDF
+  arquivoSelecionado: File | null = null;
+
+  onFileSelected(event: any) {
+    this.arquivoSelecionado = event.target.files[0];
+  }
+
+  async processarPdf() {
+    if (!this.arquivoSelecionado) {
+      alert("Selecione um arquivo");
+      return;
+    }
+
+    try {
+      const documentoPdf = await this.pdfService.importPdf(this.arquivoSelecionado);
+      const textoCombinado = this.gerarTextoCombinado();
+      const pdfEditado = await this.pdfService.editPdf(documentoPdf, textoCombinado);
+      const pdfBlob = await this.pdfService.generatePdf(pdfEditado);
+      this.downloadPdf(pdfBlob);
+    } catch (error) {
+      console.error("Erro ao processar o PDF:", error);
+    }
+  }
+
+  //CATEGORIAS
+
+  configuracao = configuracao;
+  treinamentoFiscal = treinamentoFiscal;
+  treinamentoGerencial = treinamentoGerencial;
+  treinamentoRHID = treinamentoRHID;
+  treinamentoCheff = treinamentoCheff;
+
+  // VERIFICAR CHECK ATIVOS
 
   verificarCheck(): Boolean {
     return (
       this.configuracao.some((i) => i.checked) ||
       this.treinamentoFiscal.some((i) => i.checked) ||
-      this.treinamentoRHID.some((i) => i.checked)
+      this.treinamentoGerencial.some((i) => i.checked) ||
+      this.treinamentoRHID.some((i) => i.checked) ||
+      this.treinamentoCheff.some((i) => i.checked)
     );
   }
+
+  // ATUALIZAR LISTA COM CHECKS ATUALIZADOS -- STRING DE CONFIG
 
   atualizarSelecao(itemSelecionado: string[]) {
     this.listaConfig = itemSelecionado;
   }
 
+  // ATUALIZA LISTA DE CHECK ATUALIZADOS -- STRING DE TREINAMENTO
+
   atualizarTreinamento(itemSelecionado: string[]) {
     this.listaTreinamento = itemSelecionado;
   }
 
-  ccopyToClipboard() {
+  gerarTextoCombinado() {
+    let textoFinal = "";
+
     const configuracaoText = this.configuracao
       .filter((item) => item.checked)
       .map((item) => `• ${item.label}`)
       .join("\n");
 
-    const treinamentoText = this.treinamentoFiscal
+    if (configuracaoText) {
+      textoFinal += `Instalações e Configurações:\n${configuracaoText}\n\n`;
+    }
+
+    const treinamentoFiscalText = this.treinamentoFiscal
       .filter((item) => item.checked)
       .map((item) => `• ${item.label}`)
       .join("\n");
 
-    const combinedText = `
-  Configurações Executadas:
-  ${configuracaoText}
-  
-  Treinamento Repassado:
-  ${treinamentoText}
+    if (treinamentoFiscalText) {
+      textoFinal += `Treinamento Fiscal:\n${treinamentoFiscalText}\n\n`;
+    }
 
-  Observações Adicionais:
-  ${this.obs_adc}
+    const treinamentoGerencialText = this.treinamentoGerencial
+      .filter((item) => item.checked)
+      .map((item) => `• ${item.label}`)
+      .join("\n");
 
-    `.trim();
+    if (treinamentoGerencialText) {
+      textoFinal += `Treinamento Gerencial:\n${treinamentoGerencialText}\n\n`;
+    }
 
-    // Copie o texto para o clipboard
-    navigator.clipboard.writeText(combinedText).then(
-      () => alert("Texto copiado!"),
-      (err) => console.error("Erro ao copiar texto: ", err)
-    );
+    const treinamentoRHIDText = this.treinamentoRHID
+      .filter((item) => item.checked)
+      .map((item) => `• ${item.label}`)
+      .join("\n");
+
+    if (treinamentoRHIDText) {
+      textoFinal += `Treinamento Ponto:\n${treinamentoRHIDText}\n\n`;
+    }
+
+    const treinamentoCheffText = this.treinamentoCheff
+      .filter((item) => item.checked)
+      .map((item) => `• ${item.label}`)
+      .join("\n");
+
+    if (treinamentoCheffText) {
+      textoFinal += `Treinamento Cheff:\n${treinamentoCheffText}\n\n`;
+    }
+
+    if (this.obs_adc.length > 0) {
+      textoFinal += `Observações Adicionais:\n${this.obs_adc}\n\n`;
+    }
+
+    return textoFinal.trim();
+  }
+
+  downloadPdf(blob: Blob) {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "edited.pdf";
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
 }

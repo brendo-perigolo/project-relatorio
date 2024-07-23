@@ -2,7 +2,8 @@
   <div class="conteudo">
     <h2>Ordem de Serviço</h2>
     <div>
-      <div class="">
+      <!-- CONFIG INSTALAÇOES -->
+      <div>
         <app-menu
           panelId="config"
           linkText='<i class="fas fa-cog"></i>  Instalação e Configurações'
@@ -13,6 +14,7 @@
           ></app-checks>
         </app-menu>
       </div>
+      <!-- CONFIG TREINAMENTO FISCAL -->
       <div>
         <app-menu
           panelId="t-fiscal"
@@ -25,6 +27,7 @@
           ></app-checks>
         </app-menu>
       </div>
+      <!-- CONFIG TREINAMENTO GERENCIAL -->
       <div>
         <app-menu
           panelId="t-gerencial"
@@ -37,6 +40,7 @@
           ></app-checks>
         </app-menu>
       </div>
+      <!-- CONFIG TREINAMENTO RHID -->
       <div>
         <app-menu
           panelId="t-rhid"
@@ -45,6 +49,20 @@
         >
           <app-checks
             [items]="treinamentoRHID"
+            (selectionChanged)="atualizarTreinamento($event)"
+          ></app-checks>
+        </app-menu>
+      </div>
+
+      <!-- CONFIG TREINAMENTO CHEFF -->
+      <div>
+        <app-menu
+          panelId="t-cheff"
+          linkText=' <i class="fa-regular fa-clock"></i> Treinamento Cheff'
+          content="teste"
+        >
+          <app-checks
+            [items]="treinamentoCheff"
             (selectionChanged)="atualizarTreinamento($event)"
           ></app-checks>
         </app-menu>
@@ -115,8 +133,17 @@
             </div>
           </div>
           <div class="modal-footer">
+            <input
+              type="file"
+              class="form-control"
+              id="fileInput"
+              (change)="onFileSelected($event)"
+            />
+            <button type="button" class="btn btn-danger" (click)="processarPdf()">
+              Enviar Email
+            </button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
-            <button type="button" class="btn btn-primary" (click)="ccopyToClipboard()">
+            <button type="button" class="btn btn-primary" (click)="gerarTextoCombinado()">
               <i class="fa-solid fa-print"></i>
             </button>
           </div>
