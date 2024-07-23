@@ -1,5 +1,5 @@
-import { Component, inject } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import { Component, ComponentFactoryResolver, inject } from "@angular/core";
+import { Router, RouterOutlet } from "@angular/router";
 import { MenuComponent } from "./components/menu/menu.component";
 import { ChecksComponent } from "./components/checks/checks.component";
 import { SignaturePadComponent } from "./components/signature-pad/signature-pad.component";
@@ -22,6 +22,8 @@ import { PdfServiceService } from "./services/pdf-service.service";
 })
 export class AppComponent {
   private pdfService = inject(PdfServiceService);
+
+  constructor(private resolver: ComponentFactoryResolver) {}
 
   obs_adc: string = "";
   listaConfig: string[] = [];
@@ -146,5 +148,11 @@ export class AppComponent {
     a.download = "edited.pdf";
     a.click();
     window.URL.revokeObjectURL(url);
+  }
+
+  private router = inject(Router);
+
+  navegarAssintatura() {
+    this.router.navigate(["/complete"]);
   }
 }

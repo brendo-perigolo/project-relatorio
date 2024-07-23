@@ -133,8 +133,8 @@
             </div>
           </div>
 
-          <div class="ass">
-            <app-signature-pad></app-signature-pad>
+          <div class="assinatura">
+            <button (click)="navegarAssintatura()">Adicionar Assinatura</button>
           </div>
 
           <div class="modal-footer">
@@ -145,7 +145,7 @@
               (change)="onFileSelected($event)"
             />
             <button type="button" class="btn btn-danger" (click)="processarPdf()">
-              <i class="fa-solid fa-download"></i> Baixar Pdf
+              <i class="fa-solid fa-download"></i> Baixar PDF
             </button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
             <button type="button" class="btn btn-primary" (click)="gerarTextoCombinado()">
