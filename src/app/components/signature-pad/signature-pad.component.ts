@@ -1,6 +1,15 @@
-import { Component, ElementRef, Inject, PLATFORM_ID, ViewChild } from "@angular/core";
 import { isPlatformBrowser } from "@angular/common";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  Inject,
+  PLATFORM_ID,
+  ViewChild,
+} from "@angular/core";
 import SignaturePad from "signature_pad";
+import { PdfServiceService } from "../../services/pdf-service.service";
 
 @Component({
   selector: "app-signature-pad",
@@ -9,39 +18,35 @@ import SignaturePad from "signature_pad";
   templateUrl: "./signature-pad.component.html",
   styleUrl: "./signature-pad.component.scss",
 })
-export class SignaturePadComponent {
-  @ViewChild("signatureCanvas", { static: true }) signatureCanvas!: ElementRef;
-  signaturePad!: SignaturePad;
-
+export class SignaturePadComponent implements AfterViewInit {
+  @ViewChild("signaturePad") signaturePadElement!: ElementRef;
+  signaturePad: any | undefined;
   signatureImage: string | null = null;
+
+  private pdfService = inject(PdfServiceService);
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.signaturePad = new SignaturePad(this.signatureCanvas.nativeElement, {
-        minWidth: 2,
-        maxWidth: 5,
-        backgroundColor: "rgba(255, 255, 255, 0)",
-        penColor: "rgb(0, 0, 0)",
-      });
+      if (this.signaturePadElement) {
+        this.signaturePad = new SignaturePad(this.signaturePadElement.nativeElement);
+      } else {
+        console.error("Elemento de assinatura não encontrado.");
+      }
     }
   }
 
   clear() {
-    if (this.signaturePad) {
-      this.signaturePad.clear();
-      this.signatureImage = null;
-    }
+    this.signaturePad?.clear();
   }
 
   save() {
-    if (this.signaturePad) {
-      this.signatureImage = this.signaturePad.toDataURL("image/png");
+    if (this.signaturePad?.isEmpty()) {
+      alert("Por favor, adicione uma assinatura.");
+      return;
     }
-  }
-
-  getSignatureImage() {
-    return this.signaturePad.toDataURL();
+    this.signatureImage = this.signaturePad.toDataURL("image/png");
+    this.pdfService.setSignatureImage(this.signatureImage);
   }
 }

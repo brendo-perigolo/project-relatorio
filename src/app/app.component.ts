@@ -26,6 +26,7 @@ export class AppComponent {
   obs_adc: string = "";
   listaConfig: string[] = [];
   listaTreinamento: string[] = [];
+  signatureIamge: string | null = null;
 
   // PDF
   arquivoSelecionado: File | null = null;
