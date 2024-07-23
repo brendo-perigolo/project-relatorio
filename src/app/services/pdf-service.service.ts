@@ -24,14 +24,14 @@ export class PdfServiceService {
 
     firstPage.drawRectangle({
       x: 40,
-      y: 110,
+      y: 120,
       width: 800,
       height: 300,
       color: rgb(1, 1, 1),
     });
 
     // Add text to the first page
-    const startY = 410;
+    const startY = 430;
     const lineHeight = 12; // Ajuste o espaçamento entre linhas conforme necessário
     const textSize = 14; // Tamanho da fonte
 
@@ -54,7 +54,7 @@ export class PdfServiceService {
 
       const { width, height } = signatureImageEmbed;
 
-      const xPosition = 330; // Ajuste a posição X conforme necessário
+      const xPosition = 350; // Ajuste a posição X conforme necessário
       const yPosition = 120; // Ajuste a posição Y conforme necessário
 
       // Reduz o tamanho da assinatura
