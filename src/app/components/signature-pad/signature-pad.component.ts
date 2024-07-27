@@ -57,11 +57,10 @@ export class SignaturePadComponent implements AfterViewInit {
 
   private setCanvasSize() {
     const canvas = this.signaturePadElement.nativeElement;
-    const scale = 1; // Escala de 0.5 para diminuir o conteúdo desenhado
-
+    const scale = window.devicePixelRatio;
     const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * window.devicePixelRatio * (1 / scale);
-    canvas.height = rect.height * window.devicePixelRatio * (1 / scale);
+    canvas.width = rect.width * scale;
+    canvas.height = rect.height * scale;
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
     const context = canvas.getContext("2d");
