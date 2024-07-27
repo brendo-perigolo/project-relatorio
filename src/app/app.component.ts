@@ -39,10 +39,21 @@ export class AppComponent {
 
   showRelatorio = false;
 
+  //VISUALIZAR assinatura
+
+  showAssinatura = false;
+  showBtnAssinatura = false;
+  showPadAssinatura() {
+    this.showAssinatura = !this.showAssinatura;
+    this.showRelatorio = false
+    this.showBtnAssinatura = false;
+  }
+
   // NAVEGAR PAGINA DE RELATORIO
   relatorioPage() {
     this.showRelatorio = true;
     this.showLista = false;
+    this.showBtnAssinatura = true;
     this.navegarAssintatura();
   }
 

@@ -83,118 +83,42 @@
     </div>
     <button (click)="relatorioPage()" class="btn btn-primary">Visualizar Relatorio</button>
 
+    } @if (showRelatorio === true) {
+
+    <div class="containter">
+      <h5>Relatorio :</h5>
+      <div class="btn-group">
+        <button (click)="showPadAssinatura()" class="btn btn-primary btn-sm">Assinar</button>
+        <button class="btn btn-danger btn-sm">Voltar</button>
+      </div>
+
+      <div class="lista">
+        @if (listaConfig.length >0) {
+        <h4>Configuraçoes Executadas :</h4>
+        @for (item of listaConfig; track $index) {
+        <li>{{item}}</li>
+        } } @if (listaTreinamento.length > 0) {
+        <div class="lista">
+          <h4>Treinamento Repassado :</h4>
+          @for (item of listaTreinamento; track $index) {
+          <li>{{item}}</li>
+
+          }
+        </div>
+        } @if ( obs_adc.length >0) {
+        <h4>Informaçoes Adicionais :</h4>
+        {{obs_adc}} }
+      </div>
+    </div>
+
+    <input type="file" class="form-control" id="fileInput" (change)="onFileSelected($event)" />
+    <button type="button" class="btn btn-primary" (click)="gerarTextoCombinado()">
+      <i class="fa-solid fa-print"></i>
+    </button>
+    } @if(showBtnAssinatura === true) {
+    <button (click)="showPadAssinatura()">Assinar</button>
+    } @if (showAssinatura === true) {
+    <app-signature-pad></app-signature-pad>
     }
-
-    <!-- Button trigger modal -->
-
-    <!-- <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
-      Open first modal
-    </button> -->
-
-    <!-- MOODAL -->
-    <!-- <div
-      class="modal fade"
-      id="exampleModalToggle"
-      aria-hidden="true"
-      aria-labelledby="exampleModalToggleLabel"
-      tabindex="-1"
-    >
-      <div class="modal-dialog modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Relatorio Tecnico</h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="lista">
-              @if (listaConfig.length >0) {
-              <h4>Configuraçoes Executadas :</h4>
-              @for (item of listaConfig; track $index) {
-              <li>{{item}}</li>
-              } } @if (listaTreinamento.length > 0) {
-              <div class="lista">
-                <h4>Treinamento Repassado :</h4>
-                @for (item of listaTreinamento; track $index) {
-                <li>{{item}}</li>
-
-                }
-              </div>
-              } @if ( obs_adc.length >0) {
-              <h4>Informaçoes Adicionais :</h4>
-              {{obs_adc}} }
-              <button type="button" class="btn btn-primary" (click)="gerarTextoCombinado()">
-                <i class="fa-solid fa-print"></i>
-              </button>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn-primary"
-              data-bs-target="#exampleModalToggle2"
-              data-bs-toggle="modal"
-            >
-              Open second modal
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="modal fade"
-      id="exampleModalToggle2"
-      aria-hidden="true"
-      aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1"
-    >
-      <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Assinatura</h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <app-signature-pad></app-signature-pad>
-            <div class="modal-footer">
-              <input
-                type="file"
-                class="form-control"
-                id="fileInput"
-                (change)="onFileSelected($event)"
-              />
-              <button type="button" class="btn btn-danger" (click)="processarPdf()">
-                <i class="fa-solid fa-download"></i> Baixar PDF
-              </button>
-            </div>
-            <div class="modal-footer">
-              <button
-                class="btn btn-primary"
-                data-bs-target="#exampleModalToggle"
-                data-bs-toggle="modal"
-              >
-                Back to first
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button
-        class="btn btn-primary"
-        data-bs-target="#exampleModalToggle"
-        data-bs-toggle="modal"
-      ></button>
-    </div>
-  </div>
-</div> -->
-    <router-outlet />
   </div>
 </div>
