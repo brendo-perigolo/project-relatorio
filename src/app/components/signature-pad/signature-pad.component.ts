@@ -5,12 +5,16 @@ import {
   ElementRef,
   inject,
   Inject,
+  Output,
   PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
 import SignaturePad from "signature_pad";
 import { PdfServiceService } from "../../services/pdf-service.service";
 import { ReactiveFormsModule } from "@angular/forms";
+import { EventEmitter } from "stream";
+import { BlobOptions } from "buffer";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-signature-pad",
@@ -60,7 +64,7 @@ export class SignaturePadComponent implements AfterViewInit {
     const canvas = this.signaturePadElement.nativeElement;
     const context = canvas.getContext("2d");
     if (context) {
-      const lineY = 250; // Posição vertical da linha, ajuste conforme necessário
+      const lineY = 190; // Posição vertical da linha, ajuste conforme necessário
 
       context.clearRect(2, 2, canvas.width, canvas.height); // Limpa o canvas
       context.beginPath();
@@ -95,7 +99,9 @@ export class SignaturePadComponent implements AfterViewInit {
   save() {
     if (this.signaturePad) {
       const dataURL = this.signaturePad.toDataURL();
-      console.log(dataURL); // Use a URL de dados como necessário
+      this.pdfService.setSignatureImage(dataURL);
     }
   }
+
+  voltar() {}
 }

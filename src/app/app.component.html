@@ -81,17 +81,12 @@
         ></textarea>
       </div>
     </div>
-    <button (click)="relatorioPage()" class="btn btn-primary">Visualizar Relatorio</button>
+    <button (click)="relatorio()" class="btn btn-primary">Visualizar Relatorio</button>
 
     } @if (showRelatorio === true) {
 
-    <div class="containter">
-      <h5>Relatorio :</h5>
-      <div class="btn-group">
-        <button (click)="showPadAssinatura()" class="btn btn-primary btn-sm">Assinar</button>
-        <button class="btn btn-danger btn-sm">Voltar</button>
-      </div>
-
+    <div class="container">
+      <h5>Relatorio</h5>
       <div class="lista">
         @if (listaConfig.length >0) {
         <h4>Configuraçoes Executadas :</h4>
@@ -111,14 +106,19 @@
       </div>
     </div>
 
-    <input type="file" class="form-control" id="fileInput" (change)="onFileSelected($event)" />
-    <button type="button" class="btn btn-primary" (click)="gerarTextoCombinado()">
-      <i class="fa-solid fa-print"></i>
-    </button>
-    } @if(showBtnAssinatura === true) {
-    <button (click)="showPadAssinatura()">Assinar</button>
-    } @if (showAssinatura === true) {
+    <div class="btn-group">
+      <button (click)="showPadAssinatura()" class="btn btn-primary btn-sm">Assinar</button>
+      <button (click)="showPageLista()" class="btn btn-danger btn-sm">Voltar</button>
+    </div>
+    } @if (finalizar === true ) { } @if (showAssinatura === true) {
     <app-signature-pad></app-signature-pad>
+    <div class="finalizar">
+      <input type="text" class="form-control" id="nameInput" [(ngModel)]="fileName" />
+      <input type="file" class="form-control" id="fileInput" (change)="onFileSelected($event)" />
+      <button type="button" class="btn btn-primary" (click)="processarPdf()">
+        <i class="fa-solid fa-print"></i> Salvar PDF
+      </button>
+    </div>
     }
   </div>
 </div>

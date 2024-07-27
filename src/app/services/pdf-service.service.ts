@@ -8,6 +8,7 @@ export class PdfServiceService {
   constructor() {}
 
   private signatureImage: string | null = null;
+  private fileName: string = "";
 
   async importPdf(file: File): Promise<PDFDocument> {
     const arrayBuffer = await file.arrayBuffer();
@@ -16,6 +17,9 @@ export class PdfServiceService {
 
   setSignatureImage(image: string | null) {
     this.signatureImage = image;
+  }
+  setFileName(name: string) {
+    this.fileName = name;
   }
 
   async editPdf(pdfDoc: PDFDocument, text: string): Promise<Uint8Array> {
@@ -54,8 +58,8 @@ export class PdfServiceService {
 
       const { width, height } = signatureImageEmbed;
 
-      const xPosition = 350; // Ajuste a posição X conforme necessário
-      const yPosition = 120; // Ajuste a posição Y conforme necessário
+      const xPosition = 310; // Ajuste a posição X conforme necessário
+      const yPosition = 65; // Ajuste a posição Y conforme necessário
 
       // Reduz o tamanho da assinatura
       const scale = 0.4; // Reduza o tamanho para 50% do original
@@ -68,6 +72,14 @@ export class PdfServiceService {
         width: scaledWidth,
         height: scaledHeight,
       });
+
+      // const fileNameYPosition = yPosition - scaledHeight - 20; // Ajusta a posição Y abaixo da assinatura
+      // firstPage.drawText(this.fileName, {
+      //   x: xPosition,
+      //   y: fileNameYPosition,
+      //   size: textSize,
+      //   color: rgb(0, 0, 0), // Cor do texto
+      // });
     }
     return pdfDoc.save();
   }

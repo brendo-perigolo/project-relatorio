@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Inject, inject } from "@angular/core";
+import { Component, ComponentFactoryResolver, Inject, inject, Output } from "@angular/core";
 import { Router, RouterOutlet } from "@angular/router";
 import { MenuComponent } from "./components/menu/menu.component";
 import { ChecksComponent } from "./components/checks/checks.component";
@@ -23,7 +23,6 @@ import { PdfServiceService } from "./services/pdf-service.service";
 export class AppComponent {
   private pdfService = inject(PdfServiceService);
   private router = inject(Router);
-
   constructor(private resolver: ComponentFactoryResolver) {}
 
   obs_adc: string = "";
@@ -35,6 +34,19 @@ export class AppComponent {
 
   showLista = true;
 
+  showPageLista() {
+    this.showLista = true;
+    this.showRelatorio = false;
+  }
+
+  // FINALIZAR
+
+  finalizar = false;
+
+  showFinalizar() {
+    this.finalizar = true;
+  }
+
   // VISUALIZAR Relatorio
 
   showRelatorio = false;
@@ -43,18 +55,20 @@ export class AppComponent {
 
   showAssinatura = false;
   showBtnAssinatura = false;
+
   showPadAssinatura() {
     this.showAssinatura = !this.showAssinatura;
-    this.showRelatorio = false
+    this.showRelatorio = false;
     this.showBtnAssinatura = false;
+    this.finalizar = true;
   }
 
   // NAVEGAR PAGINA DE RELATORIO
-  relatorioPage() {
+
+  relatorio() {
     this.showRelatorio = true;
     this.showLista = false;
     this.showBtnAssinatura = true;
-    this.navegarAssintatura();
   }
 
   // PDF
@@ -62,7 +76,10 @@ export class AppComponent {
 
   onFileSelected(event: any) {
     this.arquivoSelecionado = event.target.files[0];
+    this.fileName = this.arquivoSelecionado?.name;
   }
+
+  fileName: any = "";
 
   async processarPdf() {
     if (!this.arquivoSelecionado) {
@@ -75,6 +92,7 @@ export class AppComponent {
       const textoCombinado = this.gerarTextoCombinado();
       const pdfEditado = await this.pdfService.editPdf(documentoPdf, textoCombinado);
       const pdfBlob = await this.pdfService.generatePdf(pdfEditado);
+
       this.downloadPdf(pdfBlob);
     } catch (error) {
       console.error("Erro ao processar o PDF:", error);
@@ -172,7 +190,7 @@ export class AppComponent {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "edited.pdf";
+    a.download = `${this.fileName}`;
     a.click();
     window.URL.revokeObjectURL(url);
   }
