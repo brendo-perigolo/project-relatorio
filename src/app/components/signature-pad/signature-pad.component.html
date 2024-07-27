@@ -1,6 +1,9 @@
-<div class="signature-pad">
-  <h5>Assinatura</h5>
-  <canvas #signaturePad></canvas>
+<div class="signature-container">
+  <div class="signature-pad">
+    @if (showPad === true) {
+    <canvas #signaturePad></canvas>
+    }
+  </div>
   <div class="btn">
     <div>
       <button class="btn btn-danger btn-sm" (click)="clear()">
