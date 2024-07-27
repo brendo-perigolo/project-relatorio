@@ -28,8 +28,6 @@ export class SignaturePadComponent implements AfterViewInit {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-  showPad = true;
-
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       if (this.signaturePadElement) {
@@ -43,40 +41,11 @@ export class SignaturePadComponent implements AfterViewInit {
   private initializeSignaturePad() {
     const canvas = this.signaturePadElement.nativeElement;
     this.signaturePad = new SignaturePad(canvas, {
-      minWidth: 0.5,
-      maxWidth: 2.5,
+      minWidth: 0.1,
+      maxWidth: 1,
       penColor: "black",
       backgroundColor: "white",
     });
-
-    // Ajuste o tamanho do canvas
-    this.setCanvasSize();
-    this.drawBaseLine();
-  }
-
-  private setCanvasSize() {
-    const canvas = this.signaturePadElement.nativeElement;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * window.devicePixelRatio;
-    canvas.height = rect.height * window.devicePixelRatio;
-    canvas.style.width = `${rect.width}px`;
-    canvas.style.height = `${rect.height}px`;
-  }
-
-  private drawBaseLine() {
-    const canvas = this.signaturePadElement.nativeElement;
-    const context = canvas.getContext("2d");
-    if (context) {
-      // Ajuste o deslocamento da linha
-      const lineOffset = 50; // Ajuste conforme necessário
-
-      context.beginPath();
-      context.moveTo(lineOffset, 0); // Linha começa no topo
-      context.lineTo(lineOffset, canvas.height); // Linha vai até a parte inferior
-      context.strokeStyle = "black"; // Cor da linha
-      context.lineWidth = 0.5; // Espessura da linha
-      context.stroke();
-    }
   }
 
   clear() {
@@ -87,8 +56,8 @@ export class SignaturePadComponent implements AfterViewInit {
 
   save() {
     if (this.signaturePad) {
-      this.signatureImage = this.signaturePad.toDataURL();
-      console.log(this.signatureImage); // Faça o que for necessário com a imagem
+      const dataURL = this.signaturePad.toDataURL();
+      console.log(dataURL); // Use a URL de dados como necessário
     }
   }
 }

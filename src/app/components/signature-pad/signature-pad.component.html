@@ -1,19 +1,7 @@
 <div class="signature-container">
-  <div class="signature-pad">
-    @if (showPad === true) {
-    <canvas #signaturePad></canvas>
-    }
-  </div>
-  <div class="btn">
-    <div>
-      <button class="btn btn-danger btn-sm" (click)="clear()">
-        <i class="fa-solid fa-trash-can"></i> Limpar
-      </button>
-    </div>
-    <div>
-      <button class="btn btn-primary btn-sm" (click)="save()">
-        <i class="fa-solid fa-cloud-arrow-up"></i> Salvar
-      </button>
-    </div>
+  <canvas #signaturePad></canvas>
+  <div class="btn-container">
+    <button (click)="clear()">Limpar</button>
+    <button (click)="save()">Salvar</button>
   </div>
 </div>

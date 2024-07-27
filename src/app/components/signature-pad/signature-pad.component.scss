@@ -1,41 +1,16 @@
 .signature-container {
   width: 100%;
-  height: 550px;
   margin: 0 auto;
+  border: 1px solid #ccc;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  border: 1px solid #c7bfbf;
-  background-color: #f3f3f3;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.signature-pad {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-
-.signature-container::after {
-  content: "";
-  position: absolute;
-  bottom: 30px; /* Adjust this value to position the line higher or lower */
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #000; /* Line color */
 }
 
 canvas {
-  width: 100% !important;
-  height: 100% !important;
-}
-.btn {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-right: 10px;
+  width: 100%;
+  height: 250px;
+  border: 1px solid #000;
+  touch-action: none; /* Adiciona para melhor precisão em dispositivos touchscreen */
 }
