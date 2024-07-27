@@ -40,12 +40,34 @@ export class SignaturePadComponent implements AfterViewInit {
 
   private initializeSignaturePad() {
     const canvas = this.signaturePadElement.nativeElement;
-    this.signaturePad = new SignaturePad(canvas, {
-      minWidth: 0.1,
-      maxWidth: 1,
-      penColor: "black",
-      backgroundColor: "white",
-    });
+    const context = canvas.getContext("2d");
+
+    if (context) {
+      this.signaturePad = new SignaturePad(canvas, {
+        minWidth: 0.1,
+        maxWidth: 1,
+        penColor: "black",
+        backgroundColor: "white",
+      });
+
+      // DEFINICAO DA ESCALA DO CANVAS
+      this.setCanvasSize();
+    }
+  }
+
+  private setCanvasSize() {
+    const canvas = this.signaturePadElement.nativeElement;
+    const scale = 1; // Escala de 0.5 para diminuir o conteúdo desenhado
+
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio * (1 / scale);
+    canvas.height = rect.height * window.devicePixelRatio * (1 / scale);
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+    const context = canvas.getContext("2d");
+    if (context) {
+      context.scale(scale, scale); // Aplica a escala ao contexto do canvas
+    }
   }
 
   clear() {

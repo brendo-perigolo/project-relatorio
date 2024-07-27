@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, inject } from "@angular/core";
+import { Component, ComponentFactoryResolver, Inject, inject } from "@angular/core";
 import { Router, RouterOutlet } from "@angular/router";
 import { MenuComponent } from "./components/menu/menu.component";
 import { ChecksComponent } from "./components/checks/checks.component";
@@ -22,6 +22,7 @@ import { PdfServiceService } from "./services/pdf-service.service";
 })
 export class AppComponent {
   private pdfService = inject(PdfServiceService);
+  private router = inject(Router);
 
   constructor(private resolver: ComponentFactoryResolver) {}
 
@@ -29,6 +30,21 @@ export class AppComponent {
   listaConfig: string[] = [];
   listaTreinamento: string[] = [];
   signatureIamge: string | null = null;
+
+  //MOSTRAR LISTA
+
+  showLista = true;
+
+  // VISUALIZAR Relatorio
+
+  showRelatorio = false;
+
+  // NAVEGAR PAGINA DE RELATORIO
+  relatorioPage() {
+    this.showRelatorio = true;
+    this.showLista = false;
+    this.navegarAssintatura();
+  }
 
   // PDF
   arquivoSelecionado: File | null = null;
@@ -149,8 +165,6 @@ export class AppComponent {
     a.click();
     window.URL.revokeObjectURL(url);
   }
-
-  private router = inject(Router);
 
   navegarAssintatura() {
     this.router.navigate(["/complete"]);

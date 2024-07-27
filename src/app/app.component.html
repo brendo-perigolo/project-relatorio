@@ -1,92 +1,98 @@
 <div class="contain">
   <div class="conteudo">
-    <h2>Ordem de Serviço</h2>
-    <div>
-      <!-- CONFIG INSTALAÇOES -->
+    @if (showLista === true) {
+    <div class="listas">
+      <h2>Ordem de Serviço</h2>
       <div>
-        <app-menu
-          panelId="config"
-          linkText='<i class="fas fa-cog"></i>  Instalação e Configurações'
-        >
-          <app-checks
-            [items]="configuracao"
-            (selectionChanged)="atualizarSelecao($event)"
-          ></app-checks>
-        </app-menu>
-      </div>
-      <!-- CONFIG TREINAMENTO FISCAL -->
-      <div>
-        <app-menu
-          panelId="t-fiscal"
-          linkText='<i class="fa-solid fa-newspaper"></i> Treinamento Fiscal'
-          content="teste"
-        >
-          <app-checks
-            [items]="treinamentoFiscal"
-            (selectionChanged)="atualizarTreinamento($event)"
-          ></app-checks>
-        </app-menu>
-      </div>
-      <!-- CONFIG TREINAMENTO GERENCIAL -->
-      <div>
-        <app-menu
-          panelId="t-gerencial"
-          linkText='<i class="fa-solid fa-store"></i>Treinamento Gerencial '
-          content="teste"
-        >
-          <app-checks
-            [items]="treinamentoGerencial"
-            (selectionChanged)="atualizarTreinamento($event)"
-          ></app-checks>
-        </app-menu>
-      </div>
-      <!-- CONFIG TREINAMENTO RHID -->
-      <div>
-        <app-menu
-          panelId="t-rhid"
-          linkText=' <i class="fa-regular fa-clock"></i> Treinamento RHID'
-          content="teste"
-        >
-          <app-checks
-            [items]="treinamentoRHID"
-            (selectionChanged)="atualizarTreinamento($event)"
-          ></app-checks>
-        </app-menu>
+        <!-- CONFIG INSTALAÇOES -->
+        <div>
+          <app-menu
+            panelId="config"
+            linkText='<i class="fas fa-cog"></i>  Instalação e Configurações'
+          >
+            <app-checks
+              [items]="configuracao"
+              (selectionChanged)="atualizarSelecao($event)"
+            ></app-checks>
+          </app-menu>
+        </div>
+        <!-- CONFIG TREINAMENTO FISCAL -->
+        <div>
+          <app-menu
+            panelId="t-fiscal"
+            linkText='<i class="fa-solid fa-newspaper"></i> Treinamento Fiscal'
+            content="teste"
+          >
+            <app-checks
+              [items]="treinamentoFiscal"
+              (selectionChanged)="atualizarTreinamento($event)"
+            ></app-checks>
+          </app-menu>
+        </div>
+        <!-- CONFIG TREINAMENTO GERENCIAL -->
+        <div>
+          <app-menu
+            panelId="t-gerencial"
+            linkText='<i class="fa-solid fa-store"></i>Treinamento Gerencial '
+            content="teste"
+          >
+            <app-checks
+              [items]="treinamentoGerencial"
+              (selectionChanged)="atualizarTreinamento($event)"
+            ></app-checks>
+          </app-menu>
+        </div>
+        <!-- CONFIG TREINAMENTO RHID -->
+        <div>
+          <app-menu
+            panelId="t-rhid"
+            linkText=' <i class="fa-regular fa-clock"></i> Treinamento RHID'
+            content="teste"
+          >
+            <app-checks
+              [items]="treinamentoRHID"
+              (selectionChanged)="atualizarTreinamento($event)"
+            ></app-checks>
+          </app-menu>
+        </div>
+
+        <!-- CONFIG TREINAMENTO CHEFF -->
+        <div>
+          <app-menu
+            panelId="t-cheff"
+            linkText=' <i class="fa-regular fa-clock"></i> Treinamento Cheff'
+            content="teste"
+          >
+            <app-checks
+              [items]="treinamentoCheff"
+              (selectionChanged)="atualizarTreinamento($event)"
+            ></app-checks>
+          </app-menu>
+        </div>
       </div>
 
-      <!-- CONFIG TREINAMENTO CHEFF -->
-      <div>
-        <app-menu
-          panelId="t-cheff"
-          linkText=' <i class="fa-regular fa-clock"></i> Treinamento Cheff'
-          content="teste"
-        >
-          <app-checks
-            [items]="treinamentoCheff"
-            (selectionChanged)="atualizarTreinamento($event)"
-          ></app-checks>
-        </app-menu>
+      <div class="obs">
+        <h5>Observaçäo Adicionais</h5>
+        <textarea
+          class="form-control"
+          id="exampleFormControlTextarea1"
+          rows="6"
+          [(ngModel)]="obs_adc"
+        ></textarea>
       </div>
     </div>
+    <button (click)="relatorioPage()" class="btn btn-primary">Visualizar Relatorio</button>
 
-    <div class="obs">
-      <h5>Observaçäo Adicionais</h5>
-      <textarea
-        class="form-control"
-        id="exampleFormControlTextarea1"
-        rows="6"
-        [(ngModel)]="obs_adc"
-      ></textarea>
-    </div>
+    }
 
     <!-- Button trigger modal -->
 
-    <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+    <!-- <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
       Open first modal
-    </button>
+    </button> -->
 
     <!-- MOODAL -->
-    <div
+    <!-- <div
       class="modal fade"
       id="exampleModalToggle"
       aria-hidden="true"
@@ -188,5 +194,7 @@
       ></button>
     </div>
   </div>
+</div> -->
+    <router-outlet />
+  </div>
 </div>
-<router-outlet />
