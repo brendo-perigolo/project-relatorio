@@ -1,14 +1,14 @@
 <div class="containter">
   <h5>Assinatura</h5>
-  <div class="signature-container">
-    <canvas #signaturePad></canvas>
-  </div>
   <div class="btn-container">
     <div>
-      <button class="btn btn-danger" (click)="clear()">Limpar</button>
+      <button class="btn btn-danger btn-sm" (click)="clear()">Limpar</button>
     </div>
     <div>
-      <button class="btn btn-success" (click)="save()">Salvar</button>
+      <button class="btn btn-success btn-sm" (click)="save()">Salvar</button>
     </div>
+  </div>
+  <div class="signature-container">
+    <canvas #signaturePad></canvas>
   </div>
 </div>

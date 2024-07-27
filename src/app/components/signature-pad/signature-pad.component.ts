@@ -44,8 +44,8 @@ export class SignaturePadComponent implements AfterViewInit {
 
     if (context) {
       this.signaturePad = new SignaturePad(canvas, {
-        minWidth: 1.0,
-        maxWidth: 1.5,
+        minWidth: 0.5,
+        maxWidth: 1.0,
         penColor: "black",
         backgroundColor: "white",
       });
