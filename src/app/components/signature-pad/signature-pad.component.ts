@@ -59,8 +59,8 @@ export class SignaturePadComponent implements AfterViewInit {
     const canvas = this.signaturePadElement.nativeElement;
     const scale = window.devicePixelRatio;
     const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * scale;
-    canvas.height = rect.height * scale;
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
     const context = canvas.getContext("2d");
