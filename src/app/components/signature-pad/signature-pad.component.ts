@@ -33,39 +33,62 @@ export class SignaturePadComponent implements AfterViewInit {
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       if (this.signaturePadElement) {
-        this.signaturePad = new SignaturePad(this.signaturePadElement.nativeElement);
-        this.drawBaseLine();
+        this.initializeSignaturePad();
       } else {
         console.error("Elemento de assinatura não encontrado.");
       }
     }
   }
 
-  clear() {
-    this.signaturePad?.clear();
-    this.showPad = true;
+  private initializeSignaturePad() {
+    const canvas = this.signaturePadElement.nativeElement;
+    this.signaturePad = new SignaturePad(canvas, {
+      minWidth: 0.5,
+      maxWidth: 2.5,
+      penColor: "black",
+      backgroundColor: "white",
+    });
+
+    // Ajuste o tamanho do canvas
+    this.setCanvasSize();
+    this.drawBaseLine();
   }
 
-  save() {
-    if (this.signaturePad?.isEmpty()) {
-      alert("Por favor, adicione uma assinatura.");
-      return;
-    }
-    this.signatureImage = this.signaturePad.toDataURL("image/png");
-    this.pdfService.setSignatureImage(this.signatureImage);
-    this.showPad = false;
+  private setCanvasSize() {
+    const canvas = this.signaturePadElement.nativeElement;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
   }
 
   private drawBaseLine() {
     const canvas = this.signaturePadElement.nativeElement;
     const context = canvas.getContext("2d");
-    const lineOffset = 50; // Ajuste este valor conforme necessário
+    if (context) {
+      // Ajuste o deslocamento da linha
+      const lineOffset = 50; // Ajuste conforme necessário
 
-    context.beginPath();
-    context.moveTo(lineOffset, 3); // Início da linha (no deslocamento do topo esquerdo)
-    context.lineTo(lineOffset, canvas.height); // Fim da linha (no deslocamento da parte inferior esquerda)
-    context.strokeStyle = "black"; // Cor da linha
-    context.lineWidth = 1; // Espessura da linha
-    context.stroke();
+      context.beginPath();
+      context.moveTo(lineOffset, 0); // Linha começa no topo
+      context.lineTo(lineOffset, canvas.height); // Linha vai até a parte inferior
+      context.strokeStyle = "black"; // Cor da linha
+      context.lineWidth = 0.5; // Espessura da linha
+      context.stroke();
+    }
+  }
+
+  clear() {
+    if (this.signaturePad) {
+      this.signaturePad.clear();
+    }
+  }
+
+  save() {
+    if (this.signaturePad) {
+      this.signatureImage = this.signaturePad.toDataURL();
+      console.log(this.signatureImage); // Faça o que for necessário com a imagem
+    }
   }
 }
