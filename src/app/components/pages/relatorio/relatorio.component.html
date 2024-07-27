@@ -1,6 +1,17 @@
 <div class="conteiner">
   <h4>Relatorio</h4>
+
+  <div class="relatorio">
+    <div class="btn-group">
+      <div>
+        <button (click)="showPadEvent()" class="btn btn-primary btn-sm">{{btnPadText}}</button>
+      </div>
+    </div>
+  </div>
+
+  @if (showPad === true) {
   <div class="pad">
     <app-signature-pad></app-signature-pad>
   </div>
+  }
 </div>
