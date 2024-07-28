@@ -58,11 +58,11 @@ export class PdfServiceService {
 
       const { width, height } = signatureImageEmbed;
 
-      const xPosition = 310; // Ajuste a posição X conforme necessário
-      const yPosition = 65; // Ajuste a posição Y conforme necessário
+      const xPosition = 290; // Ajuste a posição X conforme necessário
+      const yPosition = 43; // Ajuste a posição Y conforme necessário
 
       // Reduz o tamanho da assinatura
-      const scale = 0.4; // Reduza o tamanho para 50% do original
+      const scale = 0.3; // Reduza o tamanho para 50% do original
       const scaledWidth = width * scale;
       const scaledHeight = height * scale;
 

@@ -56,25 +56,25 @@ export class SignaturePadComponent implements AfterViewInit {
 
       // DEFINICAO DA ESCALA DO CANVAS
       this.setCanvasSize();
-      this.drawGuideLine();
+      // this.drawGuideLine();
     }
   }
 
-  private drawGuideLine() {
-    const canvas = this.signaturePadElement.nativeElement;
-    const context = canvas.getContext("2d");
-    if (context) {
-      const lineY = 190; // Posição vertical da linha, ajuste conforme necessário
+  // private drawGuideLine() {
+  //   const canvas = this.signaturePadElement.nativeElement;
+  //   const context = canvas.getContext("2d");
+  //   if (context) {
+  //     const lineY = 190; // Posição vertical da linha, ajuste conforme necessário
 
-      context.clearRect(2, 2, canvas.width, canvas.height); // Limpa o canvas
-      context.beginPath();
-      context.moveTo(0, lineY);
-      context.lineTo(canvas.width, lineY);
-      context.strokeStyle = "red"; // Cor da linha guia
-      context.lineWidth = 1; // Espessura da linha guia
-      context.stroke();
-    }
-  }
+  //     context.clearRect(2, 2, canvas.width, canvas.height); // Limpa o canvas
+  //     context.beginPath();
+  //     context.moveTo(0, lineY);
+  //     context.lineTo(canvas.width, lineY);
+  //     context.strokeStyle = "red"; // Cor da linha guia
+  //     context.lineWidth = 1; // Espessura da linha guia
+  //     context.stroke();
+  //   }
+  // }
 
   private setCanvasSize() {
     const canvas = this.signaturePadElement.nativeElement;
