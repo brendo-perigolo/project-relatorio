@@ -12,9 +12,8 @@ import {
 import SignaturePad from "signature_pad";
 import { PdfServiceService } from "../../services/pdf-service.service";
 import { ReactiveFormsModule } from "@angular/forms";
-import { EventEmitter } from "stream";
-import { BlobOptions } from "buffer";
-import { Observable } from "rxjs";
+
+import getStroke from "perfect-freehand";
 
 @Component({
   selector: "app-signature-pad",
@@ -27,6 +26,7 @@ export class SignaturePadComponent implements AfterViewInit {
   @ViewChild("signaturePad") signaturePadElement!: ElementRef;
   signaturePad: any | undefined;
   signatureImage: string | null = null;
+  signatureData: any[] = [];
 
   private pdfService = inject(PdfServiceService);
 
@@ -40,6 +40,11 @@ export class SignaturePadComponent implements AfterViewInit {
         console.error("Elemento de assinatura não encontrado.");
       }
     }
+  }
+
+  private onEnd() {
+    this.signatureData = this.signaturePad.toData();
+    this.drawEnhancedSignature();
   }
 
   private initializeSignaturePad() {
@@ -56,25 +61,8 @@ export class SignaturePadComponent implements AfterViewInit {
 
       // DEFINICAO DA ESCALA DO CANVAS
       this.setCanvasSize();
-      // this.drawGuideLine();
     }
   }
-
-  // private drawGuideLine() {
-  //   const canvas = this.signaturePadElement.nativeElement;
-  //   const context = canvas.getContext("2d");
-  //   if (context) {
-  //     const lineY = 190; // Posição vertical da linha, ajuste conforme necessário
-
-  //     context.clearRect(2, 2, canvas.width, canvas.height); // Limpa o canvas
-  //     context.beginPath();
-  //     context.moveTo(0, lineY);
-  //     context.lineTo(canvas.width, lineY);
-  //     context.strokeStyle = "red"; // Cor da linha guia
-  //     context.lineWidth = 1; // Espessura da linha guia
-  //     context.stroke();
-  //   }
-  // }
 
   private setCanvasSize() {
     const canvas = this.signaturePadElement.nativeElement;
@@ -88,6 +76,31 @@ export class SignaturePadComponent implements AfterViewInit {
     if (context) {
       context.scale(scale, scale); // Aplica a escala ao contexto do canvas
     }
+  }
+
+  private drawEnhancedSignature() {
+    // const canvas = this.signaturePadElement.nativeElement;
+    // const context = canvas.getContext("2d");
+    // if (context) {
+    //   context.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+    //   const points = this.signatureData.flatMap((segment: any) =>
+    //     segment.points.map((point: any) => [point.x, point.y])
+    //   );
+    //   const paths = getStroke(points);
+    //   context.fillStyle = "black";
+    //   paths.forEach((path: [number, number][]) => {
+    //     context.beginPath();
+    //     path.forEach(([x, y], index) => {
+    //       if (index === 0) {
+    //         context.moveTo(x, y);
+    //       } else {
+    //         context.lineTo(x, y);
+    //       }
+    //     });
+    //     context.closePath();
+    //     context.fill();
+    //   });
+    // }
   }
 
   clear() {

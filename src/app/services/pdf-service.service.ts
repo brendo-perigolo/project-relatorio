@@ -62,9 +62,10 @@ export class PdfServiceService {
       const yPosition = 43; // Ajuste a posição Y conforme necessário
 
       // Reduz o tamanho da assinatura
-      const scale = 0.3; // Reduza o tamanho para 50% do original
+      const scale = 0.2; // Reduza o tamanho para 50% do original
       const scaledWidth = width * scale;
       const scaledHeight = height * scale;
+      onabort;
 
       firstPage.drawImage(signatureImageEmbed, {
         x: xPosition,
@@ -72,14 +73,6 @@ export class PdfServiceService {
         width: scaledWidth,
         height: scaledHeight,
       });
-
-      // const fileNameYPosition = yPosition - scaledHeight - 20; // Ajusta a posição Y abaixo da assinatura
-      // firstPage.drawText(this.fileName, {
-      //   x: xPosition,
-      //   y: fileNameYPosition,
-      //   size: textSize,
-      //   color: rgb(0, 0, 0), // Cor do texto
-      // });
     }
     return pdfDoc.save();
   }
