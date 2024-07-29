@@ -62,7 +62,7 @@ export class PdfServiceService {
       const yPosition = 43; // Ajuste a posição Y conforme necessário
 
       // Reduz o tamanho da assinatura
-      const scale = 0.2; // Reduza o tamanho para 50% do original
+      const scale = 0.1; // Reduza o tamanho para 50% do original
       const scaledWidth = width * scale;
       const scaledHeight = height * scale;
       onabort;
