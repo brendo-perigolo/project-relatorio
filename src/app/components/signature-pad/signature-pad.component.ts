@@ -6,6 +6,7 @@ import {
   EventEmitter,
   inject,
   Inject,
+  output,
   Output,
   PLATFORM_ID,
   ViewChild,
@@ -85,11 +86,24 @@ export class SignaturePadComponent implements AfterViewInit {
     if (this.signaturePad) {
       const dataURL = this.signaturePad.toDataURL();
       this.pdfService.setSignatureImage(dataURL);
+      this.ocutarAssinatura();
     }
   }
+
+  saveTecnico() {
+    if (this.signaturePad) {
+      const dataUrl = this.signaturePad.toDataURL();
+      localStorage.setItem("key", dataUrl);
+    }
+  }
+
   @Output() voltarPrincipal = new EventEmitter();
+  @Output() ocutarPad = new EventEmitter();
   voltar() {
     this.voltarPrincipal.emit();
-    alert("mandou");
+  }
+
+  ocutarAssinatura() {
+    this.ocutarPad.emit();
   }
 }

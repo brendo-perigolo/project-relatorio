@@ -5,10 +5,11 @@ import { PDFDocument, rgb } from "pdf-lib";
   providedIn: "root",
 })
 export class PdfServiceService {
-  constructor() {}
-
   private signatureImage: string | null = null;
   private fileName: string = "";
+  private AssinaturaTecnico: string = "key";
+  private horaEntradaInput = "";
+  private responsavelInput = "";
 
   async importPdf(file: File): Promise<PDFDocument> {
     const arrayBuffer = await file.arrayBuffer();
@@ -22,20 +23,30 @@ export class PdfServiceService {
     this.fileName = name;
   }
 
+  setTimeEntrada(entrada: string) {
+    this.horaEntradaInput = entrada;
+  }
+
+  setResponsavel(responsavel: string) {
+    this.responsavelInput = responsavel;
+  }
+
   async editPdf(pdfDoc: PDFDocument, text: string): Promise<Uint8Array> {
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
+
+    // Desenha o Retangulo Branco
 
     firstPage.drawRectangle({
       x: 40,
       y: 140,
       width: 800,
-      height: 350,
+      height: 370,
       color: rgb(1, 1, 1),
     });
 
     // Add text to the first page
-    const startY = 430;
+    const startY = 500;
     const lineHeight = 12; // Ajuste o espaçamento entre linhas conforme necessário
     const textSize = 14; // Tamanho da fonte
 
@@ -51,15 +62,65 @@ export class PdfServiceService {
       });
     });
 
+    // Adicioonar Responsavel
+    firstPage.drawText(`Recebido por : ${this.responsavelInput}`, {
+      x: 340,
+      y: 75,
+      size: 13,
+      color: rgb(0, 0, 0),
+    });
+
+    //Adicionar Hora Entrada
+
+    firstPage.drawText(`Entrada : ${this.horaEntradaInput}`, {
+      x: 50,
+      y: 75,
+      size: 13,
+      color: rgb(0, 0, 0),
+    });
+
+    //Adicionar Hora Encerramento
+
+    const currentDate = new Date();
+    const timeString = currentDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+    firstPage.drawText(`Saída : ${timeString}`, {
+      x: 150,
+      y: 75,
+      size: 13,
+      color: rgb(0, 0, 0),
+    });
+
+    // Adicionar Assinatura do Técnico
+    const tecnicoSignature = this.getTecnicoSignature();
+    if (tecnicoSignature) {
+      const signatureImageBytes = await fetch(tecnicoSignature).then((res) => res.arrayBuffer());
+      const signatureImageEmbed = await pdfDoc.embedPng(signatureImageBytes);
+
+      const { width, height } = signatureImageEmbed;
+      const xPosition = 50;
+      const yPosition = 105;
+      const scale = 0.1;
+      const scaledWidth = width * scale;
+      const scaledHeight = height * scale;
+
+      firstPage.drawImage(signatureImageEmbed, {
+        x: xPosition,
+        y: yPosition,
+        width: scaledWidth,
+        height: scaledHeight,
+      });
+    }
+    // Adicionar Assinatura do Cliente
     if (this.signatureImage) {
-      // Adiciona a assinatura ao PDF
+      // Adiciona a assinatura ao Cliente PDF
       const signatureImageBytes = await fetch(this.signatureImage).then((res) => res.arrayBuffer());
       const signatureImageEmbed = await pdfDoc.embedPng(signatureImageBytes);
 
       const { width, height } = signatureImageEmbed;
 
-      const xPosition = 290; // Ajuste a posição X conforme necessário
-      const yPosition = 43; // Ajuste a posição Y conforme necessário
+      const xPosition = 300; // Ajuste a posição X conforme necessário
+      const yPosition = 105; // Ajuste a posição Y conforme necessário
 
       // Reduz o tamanho da assinatura
       const scale = 0.1; // Reduza o tamanho para 50% do original
@@ -79,5 +140,9 @@ export class PdfServiceService {
 
   async generatePdf(data: Uint8Array): Promise<Blob> {
     return new Blob([data], { type: "application/pdf" });
+  }
+
+  private getTecnicoSignature(): string | null {
+    return localStorage.getItem("key");
   }
 }

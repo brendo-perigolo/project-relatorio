@@ -12,6 +12,7 @@ import {
   treinamentoRHID,
 } from "./Data/configData";
 import { PdfServiceService } from "./services/pdf-service.service";
+import { Time } from "@angular/common";
 
 @Component({
   selector: "app-root",
@@ -60,7 +61,7 @@ export class AppComponent {
     this.showAssinatura = !this.showAssinatura;
     this.showRelatorio = false;
     this.showBtnAssinatura = false;
-    this.finalizar = true;
+    this.finalizar = false;
   }
 
   // NAVEGAR PAGINA DE RELATORIO
@@ -68,7 +69,6 @@ export class AppComponent {
   relatorio() {
     this.showRelatorio = true;
     this.showLista = false;
-    this.showBtnAssinatura = true;
   }
 
   // PDF
@@ -80,6 +80,8 @@ export class AppComponent {
   }
 
   fileName: any = "";
+  responsavel: string = "";
+  entrada: string = "";
 
   async processarPdf() {
     if (!this.arquivoSelecionado) {
@@ -90,6 +92,8 @@ export class AppComponent {
     try {
       const documentoPdf = await this.pdfService.importPdf(this.arquivoSelecionado);
       const textoCombinado = this.gerarTextoCombinado();
+      this.pdfService.setResponsavel(this.responsavel);
+      this.pdfService.setTimeEntrada(this.entrada);
       const pdfEditado = await this.pdfService.editPdf(documentoPdf, textoCombinado);
       const pdfBlob = await this.pdfService.generatePdf(pdfEditado);
 
@@ -195,12 +199,13 @@ export class AppComponent {
     window.URL.revokeObjectURL(url);
   }
 
-  navegarAssintatura() {
-    this.router.navigate(["/complete"]);
-  }
-
   voltarTelaInicial() {
     this.showPageLista();
-    alert("recebeu");
+    this.showAssinatura = false;
+  }
+
+  ocultarPad() {
+    this.showAssinatura = false;
+    this.finalizar = true;
   }
 }

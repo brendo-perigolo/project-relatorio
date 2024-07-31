@@ -1,5 +1,7 @@
 <div class="contain">
   <div class="conteudo">
+    <!-- LISTA -->
+
     @if (showLista === true) {
     <div class="listas">
       <h2>Ordem de Serviço</h2>
@@ -88,6 +90,12 @@
     <div class="container">
       <h5>Relatorio</h5>
       <hr class="line" />
+
+      <div class="btn-grupo">
+        <hr />
+        <button (click)="showPadAssinatura()" class="btn btn-primary">Assinar</button>
+        <button (click)="showPageLista()" class="btn btn-danger">Voltar</button>
+      </div>
       <div class="lista">
         @if (listaConfig.length >0) {
         <h4>Configuraçoes Executadas :</h4>
@@ -113,21 +121,40 @@
         {{obs_adc}} }
       </div>
     </div>
-    <hr class="line" />
 
-    <div class="btn-grupo">
-      <button (click)="showPadAssinatura()" class="btn btn-primary">Assinar</button>
-      <button (click)="showPageLista()" class="btn btn-danger">Voltar</button>
-    </div>
-    } @if (finalizar === true ) { } @if (showAssinatura === true) {
-    <app-signature-pad (voltarPrincipal)="voltarTelaInicial()"></app-signature-pad>
+    }
+
+    <!-- ASSINTAURA -->
+    <hr />
+
+    @if (showAssinatura === true) {
+    <app-signature-pad
+      (ocutarPad)="ocultarPad()"
+      (voltarPrincipal)="voltarTelaInicial()"
+    ></app-signature-pad>
+    }
+
+    <!-- FINALIZACAO -->
+
+    <hr />
+
+    @if (finalizar === true) {
     <div class="finalizar">
+      <h5>Finalizar</h5>
+
       <input
         type="text"
         placeholder="Responsavel"
         class="form-control"
         id="nameInput"
-        [(ngModel)]="fileName"
+        [(ngModel)]="responsavel"
+      />
+      <input
+        type="time"
+        placeholder="Entrada"
+        class="form-control"
+        id="nameInput"
+        [(ngModel)]="entrada"
       />
       <input type="file" class="form-control" id="fileInput" (change)="onFileSelected($event)" />
       <button type="button" class="btn btn-primary" (click)="processarPdf()">
@@ -135,9 +162,9 @@
       </button>
     </div>
     }
-  </div>
 
-  <div class="foot">
-    <p>Versao 0.1.1.4</p>
+    <div class="foot">
+      <p>Versao 1.0.0.0</p>
+    </div>
   </div>
 </div>

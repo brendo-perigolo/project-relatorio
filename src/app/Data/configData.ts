@@ -7,6 +7,7 @@ export const configuracao = [
   { id: "check6", label: "Esistem Loja Financeiro.", checked: false },
   { id: "check7", label: "Instalado equipamento no local.", checked: false },
   { id: "check8", label: "Configurado equipamento na rede.", checked: false },
+  { id: "check8", label: "Feito um cabo rede.", checked: false },
   { id: "check9", label: "Configurado IDCloud.", checked: false },
 ];
 
@@ -38,6 +39,9 @@ export const treinamentoRHID = [
   { id: "check28", label: "Cadastro de Biometria.", checked: false },
   { id: "check29", label: "Verificação e apuração de Ponto.", checked: false },
   { id: "check30", label: "Retirada de relatórios de Ponto.", checked: false },
+  { id: "check31", label: "Instalar Aplicativo Mobile.", checked: false },
+  { id: "check32", label: "Bater Ponto Mobile.", checked: false },
+  { id: "check33", label: "Utilizar Mobile Adminsitrador.", checked: false },
   { id: "check31", label: "Troca de bobina.", checked: false },
 ];
 
