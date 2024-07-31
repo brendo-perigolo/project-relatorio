@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   inject,
   Inject,
   Output,
@@ -14,6 +15,7 @@ import { PdfServiceService } from "../../services/pdf-service.service";
 import { ReactiveFormsModule } from "@angular/forms";
 
 import getStroke from "perfect-freehand";
+import { emit } from "process";
 
 @Component({
   selector: "app-signature-pad",
@@ -40,11 +42,6 @@ export class SignaturePadComponent implements AfterViewInit {
         console.error("Elemento de assinatura não encontrado.");
       }
     }
-  }
-
-  private onEnd() {
-    this.signatureData = this.signaturePad.toData();
-    this.drawEnhancedSignature();
   }
 
   private initializeSignaturePad() {
@@ -78,31 +75,6 @@ export class SignaturePadComponent implements AfterViewInit {
     }
   }
 
-  private drawEnhancedSignature() {
-    // const canvas = this.signaturePadElement.nativeElement;
-    // const context = canvas.getContext("2d");
-    // if (context) {
-    //   context.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
-    //   const points = this.signatureData.flatMap((segment: any) =>
-    //     segment.points.map((point: any) => [point.x, point.y])
-    //   );
-    //   const paths = getStroke(points);
-    //   context.fillStyle = "black";
-    //   paths.forEach((path: [number, number][]) => {
-    //     context.beginPath();
-    //     path.forEach(([x, y], index) => {
-    //       if (index === 0) {
-    //         context.moveTo(x, y);
-    //       } else {
-    //         context.lineTo(x, y);
-    //       }
-    //     });
-    //     context.closePath();
-    //     context.fill();
-    //   });
-    // }
-  }
-
   clear() {
     if (this.signaturePad) {
       this.signaturePad.clear();
@@ -115,6 +87,9 @@ export class SignaturePadComponent implements AfterViewInit {
       this.pdfService.setSignatureImage(dataURL);
     }
   }
-
-  voltar() {}
+  @Output() voltarPrincipal = new EventEmitter();
+  voltar() {
+    this.voltarPrincipal.emit();
+    alert("mandou");
+  }
 }

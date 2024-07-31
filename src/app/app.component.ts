@@ -198,4 +198,9 @@ export class AppComponent {
   navegarAssintatura() {
     this.router.navigate(["/complete"]);
   }
+
+  voltarTelaInicial() {
+    this.showPageLista();
+    alert("recebeu");
+  }
 }

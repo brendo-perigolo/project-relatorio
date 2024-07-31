@@ -28,7 +28,8 @@ canvas {
   position: absolute;
   top: 70%; /* Adjust as needed */
   left: 10%;
-  width: 90%;
+  right: 10%;
+  width: 80%;
   height: 2px; /* Line thickness */
   background-color: red; /* Line color */
   z-index: 10; /* Ensure it's above the canvas */
