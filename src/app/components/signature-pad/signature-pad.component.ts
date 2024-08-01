@@ -30,10 +30,23 @@ export class SignaturePadComponent implements AfterViewInit {
   signaturePad: any | undefined;
   signatureImage: string | null = null;
   signatureData: any[] = [];
+  assinaturaLocalStorage = true;
 
   private pdfService = inject(PdfServiceService);
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  ngOnInit() {
+    this.verificaAssinaturaLocalStorage();
+  }
+
+  verificaAssinaturaLocalStorage() {
+    const assinatura = localStorage.getItem("key");
+
+    if (assinatura === null) {
+      this.assinaturaLocalStorage = false;
+    }
+  }
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -94,6 +107,7 @@ export class SignaturePadComponent implements AfterViewInit {
     if (this.signaturePad) {
       const dataUrl = this.signaturePad.toDataURL();
       localStorage.setItem("key", dataUrl);
+      alert("Assinatura Tecnico Salva!");
     }
   }
 
