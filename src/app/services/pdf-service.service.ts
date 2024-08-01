@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { PDFDocument, rgb } from "pdf-lib";
 
+123;
+
 @Injectable({
   providedIn: "root",
 })
@@ -10,6 +12,8 @@ export class PdfServiceService {
   private AssinaturaTecnico: string = "key";
   private horaEntradaInput = "";
   private responsavelInput = "";
+  private dateInput: any = "";
+  private tecnico: string = "Autocom Manhuaçu";
 
   async importPdf(file: File): Promise<PDFDocument> {
     const arrayBuffer = await file.arrayBuffer();
@@ -19,8 +23,14 @@ export class PdfServiceService {
   setSignatureImage(image: string | null) {
     this.signatureImage = image;
   }
+
   setFileName(name: string) {
     this.fileName = name;
+  }
+
+  setData() {
+    const data = new Date();
+    this.dateInput = data.toLocaleDateString();
   }
 
   setTimeEntrada(entrada: string) {
@@ -34,107 +44,153 @@ export class PdfServiceService {
   async editPdf(pdfDoc: PDFDocument, text: string): Promise<Uint8Array> {
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
+    const { width, height } = firstPage.getSize();
 
-    // Desenha o Retangulo Branco
-
+    // Desenha retângulo branco para limpar a área de texto
     firstPage.drawRectangle({
-      x: 40,
-      y: 140,
-      width: 800,
-      height: 370,
+      x: width * 0.0,
+      y: height * 0.08,
+      width: width * 1,
+      height: height * 0.4,
       color: rgb(1, 1, 1),
     });
 
-    // Add text to the first page
-    const startY = 500;
-    const lineHeight = 12; // Ajuste o espaçamento entre linhas conforme necessário
-    const textSize = 14; // Tamanho da fonte
+    firstPage.drawRectangle({
+      x: width * 0.0,
+      y: height * 0.0,
+      width: width * 1,
+      height: height * 0.3,
+      color: rgb(1, 1, 1),
+    });
 
-    // Divide o texto em linhas com base no tamanho da página e no espaçamento
-    const lines = text.split("\n"); // Supondo que o texto esteja separado por novas linhas
+    // Adiciona o texto na primeira página
+    const startY = height * 0.4;
+    const lineHeight = height * 0.02;
+    const textSize = 12;
 
-    // Adiciona cada linha de texto
+    const lines = text.split("\n");
+
     lines.forEach((line, index) => {
       firstPage.drawText(line, {
-        x: 50,
-        y: startY - index * lineHeight, // Ajusta a posição y para cada linha
+        x: width * 0.08,
+        y: startY - index * lineHeight,
         size: textSize,
       });
     });
 
-    // Adicioonar Responsavel
-    firstPage.drawText(`Recebido por : ${this.responsavelInput}`, {
-      x: 340,
-      y: 75,
-      size: 13,
+    // Adiciona Data Atendimento
+    const dataAtual = new Date();
+    const dataAtualString = dataAtual.toLocaleDateString();
+
+    firstPage.drawText(`Data Atendimento : ${dataAtualString}`, {
+      x: width * 0.1,
+      y: height * 0.138,
+      size: 12,
       color: rgb(0, 0, 0),
     });
 
-    //Adicionar Hora Entrada
-
-    firstPage.drawText(`Entrada : ${this.horaEntradaInput}`, {
-      x: 50,
-      y: 75,
-      size: 13,
+    // Adicionar Hora de Entrada
+    firstPage.drawText(` Hora Entrada / Hora saída :  ${this.horaEntradaInput}  /`, {
+      x: width * 0.1,
+      y: height * 0.118,
+      size: 11,
       color: rgb(0, 0, 0),
     });
 
-    //Adicionar Hora Encerramento
-
+    // Adicionar Hora de Saída
     const currentDate = new Date();
     const timeString = currentDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-    firstPage.drawText(`Saída : ${timeString}`, {
-      x: 150,
-      y: 75,
-      size: 13,
+    firstPage.drawText(`${timeString}`, {
+      x: width * 0.4,
+      y: height * 0.118,
+      size: 11,
       color: rgb(0, 0, 0),
     });
+
+    // Adicionar linha pontilhada acima da data e hora
+    this.drawDashedLine(firstPage, 0.1 * width, 0.158 * height, 0.9 * width, 0.158 * height, 0.5);
 
     // Adicionar Assinatura do Técnico
     const tecnicoSignature = this.getTecnicoSignature();
     if (tecnicoSignature) {
       const signatureImageBytes = await fetch(tecnicoSignature).then((res) => res.arrayBuffer());
       const signatureImageEmbed = await pdfDoc.embedPng(signatureImageBytes);
+      const signatureScale = 0.1;
+      const signatureWidth = signatureImageEmbed.width * signatureScale;
+      const signatureHeight = signatureImageEmbed.height * signatureScale;
 
-      const { width, height } = signatureImageEmbed;
-      const xPosition = 50;
-      const yPosition = 105;
-      const scale = 0.1;
-      const scaledWidth = width * scale;
-      const scaledHeight = height * scale;
+      // Definir posições
+      const lineY = height * 0.06; // Linha em Y
+      const signatureY = lineY + 50; // Assinatura um pouco acima da linha
+      const textBelowLineY = lineY - 15; // Texto abaixo da linha
 
+      // Adicionar linha para a assinatura do técnico
+      this.drawLine(firstPage, width * 0.08, lineY, width * 0.45, lineY, 0.5);
+
+      // Adicionar assinatura do técnico
       firstPage.drawImage(signatureImageEmbed, {
-        x: xPosition,
-        y: yPosition,
-        width: scaledWidth,
-        height: scaledHeight,
+        x: width * 0.08 + (width * 0.45 - signatureWidth) / 2, // Centralizar horizontalmente
+        y: signatureY - signatureHeight, // Assinatura um pouco acima da linha
+        width: signatureWidth,
+        height: signatureHeight,
+      });
+
+      // Adicionar texto do técnico abaixo da linha
+      const tecnicoTextWidth = this.measureTextWidth(this.tecnico, 11);
+      firstPage.drawText(this.tecnico, {
+        x: (width * 0.08 + width * 0.45 - tecnicoTextWidth) / 2,
+        y: textBelowLineY, // Texto abaixo da linha
+        size: 11,
+        color: rgb(0, 0, 0),
       });
     }
+
     // Adicionar Assinatura do Cliente
-    if (this.signatureImage) {
-      // Adiciona a assinatura ao Cliente PDF
-      const signatureImageBytes = await fetch(this.signatureImage).then((res) => res.arrayBuffer());
+    const clienteSignature = this.signatureImage;
+    if (clienteSignature) {
+      const signatureImageBytes = await fetch(clienteSignature).then((res) => res.arrayBuffer());
       const signatureImageEmbed = await pdfDoc.embedPng(signatureImageBytes);
+      const signatureScale = 0.1;
+      const signatureWidth = signatureImageEmbed.width * signatureScale;
+      const signatureHeight = signatureImageEmbed.height * signatureScale;
 
-      const { width, height } = signatureImageEmbed;
+      // Definir posições
+      const lineY = height * 0.06; // Linha em Y
+      const signatureY = lineY + 50; // Assinatura um pouco acima da linha
+      const textBelowLineY = lineY - 15; // Texto abaixo da linha
 
-      const xPosition = 300; // Ajuste a posição X conforme necessário
-      const yPosition = 105; // Ajuste a posição Y conforme necessário
+      // Adicionar linha para a assinatura do cliente
+      this.drawLine(firstPage, width * 0.55, lineY, width * 0.95, lineY, 0.5);
 
-      // Reduz o tamanho da assinatura
-      const scale = 0.1; // Reduza o tamanho para 50% do original
-      const scaledWidth = width * scale;
-      const scaledHeight = height * scale;
-      onabort;
-
+      // Adicionar assinatura do cliente
       firstPage.drawImage(signatureImageEmbed, {
-        x: xPosition,
-        y: yPosition,
-        width: scaledWidth,
-        height: scaledHeight,
+        x: width * 0.55 + (width * 0.95 - signatureWidth - width * 0.55) / 2, // Centralizar horizontalmente
+        y: signatureY - signatureHeight, // Assinatura um pouco acima da linha
+        width: signatureWidth,
+        height: signatureHeight,
+      });
+
+      // Adicionar texto do cliente abaixo da linha
+      const responsavelTextWidth = this.measureTextWidth(this.responsavelInput, 11);
+      firstPage.drawText(this.responsavelInput, {
+        x: width * 0.55 + (width * 0.95 - responsavelTextWidth - width * 0.55) / 2,
+        y: textBelowLineY, // Texto abaixo da linha
+        size: 11,
+        color: rgb(0, 0, 0),
       });
     }
+
+    // Adicionar texto final
+    const finalText = "eSistemLoja - A Solução Completa na medida Certa! (0800 591 3107)";
+    const finalTextWidth = this.measureTextWidth(finalText, 10);
+    firstPage.drawText(finalText, {
+      x: (width - finalTextWidth) / 2,
+      y: height * 0.02,
+      size: 10,
+      color: rgb(0, 0, 0),
+    });
+
     return pdfDoc.save();
   }
 
@@ -144,5 +200,50 @@ export class PdfServiceService {
 
   private getTecnicoSignature(): string | null {
     return localStorage.getItem("key");
+  }
+
+  private drawLine(page: any, x1: number, y1: number, x2: number, y2: number, thickness: number) {
+    page.drawRectangle({
+      x: x1,
+      y: y1 - thickness / 2,
+      width: x2 - x1,
+      height: thickness,
+      color: rgb(0, 0, 0),
+    });
+  }
+
+  private drawDashedLine(
+    page: any,
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    thickness: number
+  ) {
+    const dashLength = 5;
+    const gapLength = 5;
+    const totalLength = x2 - x1;
+    let currentX = x1;
+
+    while (currentX < x2) {
+      page.drawRectangle({
+        x: currentX,
+        y: y1 - thickness / 2,
+        width: Math.min(dashLength, x2 - currentX),
+        height: thickness,
+        color: rgb(0, 0, 0),
+      });
+      currentX += dashLength + gapLength;
+    }
+  }
+
+  private measureTextWidth(text: string, fontSize: number): number {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (context) {
+      context.font = `${fontSize}px Arial`;
+      return context.measureText(text).width;
+    }
+    return 0;
   }
 }
