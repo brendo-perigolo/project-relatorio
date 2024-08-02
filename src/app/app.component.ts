@@ -31,6 +31,10 @@ export class AppComponent {
   listaTreinamento: string[] = [];
   signatureIamge: string | null = null;
 
+  //MOSTRAR VERSAO
+
+  showVersao = false;
+
   //MOSTRAR LISTA
 
   showLista = true;
@@ -56,6 +60,19 @@ export class AppComponent {
 
   showAssinatura = false;
   showBtnAssinatura = false;
+
+  verificarPosicao() {
+    const question = window.confirm("A posição da assinatura está correta?");
+    if (question) {
+      this.padRotacao(); // Executa a ação se o usuário confirmar
+    } else {
+      alert("Por favor, vire a posição para vertical."); // Mensagem clara para instruir o usuário
+    }
+  }
+
+  padRotacao() {
+    this.showPadAssinatura();
+  }
 
   showPadAssinatura() {
     this.showAssinatura = !this.showAssinatura;
