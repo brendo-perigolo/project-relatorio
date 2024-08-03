@@ -9,6 +9,8 @@ export const configuracao = [
   { id: "check8", label: "Configurado equipamento na rede.", checked: false },
   { id: "check8", label: "Feito um cabo rede.", checked: false },
   { id: "check9", label: "Configurado IDCloud.", checked: false },
+  { id: "check9", label: "Instalado e configurado Impressoras.", checked: false },
+  { id: "check9", label: "Instalado e configvurado Mobile", checked: false },
 ];
 
 export const treinamentoFiscal = [
@@ -26,7 +28,7 @@ export const treinamentoGerencial = [
   { id: "check18", label: "Cadastro de Cliente.", checked: false },
   { id: "check19", label: "Cadastro de Produto manual.", checked: false },
   { id: "check20", label: "Inclusão de movimentação de estoque.", checked: false },
-  { id: "check21", label: "Inclusão de movimentação de venda rápida.", checked: false },
+  { id: "check21", label: "Inclusão venda rápida.", checked: false },
   { id: "check22", label: "Gerenciamento e fluxo de caixa.", checked: false },
   { id: "check23", label: "Gerenciar Títulos a Receber.", checked: false },
   { id: "check24", label: "Gerenciar Títulos a Pagar.", checked: false },
@@ -54,6 +56,7 @@ export const treinamentoCheff = [
   { id: "check37", label: "Mapa de mesas.", checked: false },
   { id: "check38", label: "Fluxo de caixa e relatorios.", checked: false },
   { id: "check39", label: "Modulo Mesa.", checked: false },
+  { id: "check39", label: "Modulo Mobile.", checked: false },
   { id: "check40", label: "Modulo Comanda.", checked: false },
   { id: "check41", label: "Modulo Delivery.", checked: false },
   { id: "check42", label: "Modulo Ficha.", checked: false },
