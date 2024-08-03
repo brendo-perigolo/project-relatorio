@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import { PDFDocument, rgb } from "pdf-lib";
 
-123;
-
 @Injectable({
   providedIn: "root",
 })
@@ -51,7 +49,7 @@ export class PdfServiceService {
       x: width * 0.0,
       y: height * 0.08,
       width: width * 1,
-      height: height * 0.4,
+      height: height * 0.45,
       color: rgb(1, 1, 1),
     });
 
@@ -63,18 +61,41 @@ export class PdfServiceService {
       color: rgb(1, 1, 1),
     });
 
-    // Adiciona o texto na primeira página
-    const startY = height * 0.4;
-    const lineHeight = height * 0.02;
-    const textSize = 12;
+    // Defina variáveis para controle de texto
+    const startY = height * 0.43; // Posição inicial do Y para o texto
+    const lineHeight = height * 0.02; // Altura da linha
+    const textSize = height * 0.011; // Tamanho do texto
 
+    const columnWidth = (width - 2 * (width * 0.08)) / 2; // Largura das colunas
+    const textMargin = width * 0.08; // Margem das colunas
+
+    // Divida o texto em linhas
     const lines = text.split("\n");
 
-    lines.forEach((line, index) => {
-      firstPage.drawText(line, {
-        x: width * 0.08,
-        y: startY - index * lineHeight,
-        size: textSize,
+    let y = startY;
+    let column = 0;
+    const columnLines: string[][] = [[], []]; // Array para armazenar as linhas de cada coluna
+
+    lines.forEach((line) => {
+      // Adiciona linha à coluna atual
+      columnLines[column].push(line);
+      if (columnLines[column].join("\n").split("\n").length * lineHeight > height * 0.2) {
+        // Se a coluna está cheia, mude para a próxima coluna
+        column = 1;
+        y = startY;
+      }
+    });
+
+    // Desenha o texto nas duas colunas
+    columnLines.forEach((columnLines, colIndex) => {
+      const x = textMargin + colIndex * (columnWidth + textMargin);
+      columnLines.forEach((line, index) => {
+        firstPage.drawText(line, {
+          x: x,
+          y: y - index * lineHeight,
+          size: textSize,
+          maxWidth: columnWidth,
+        });
       });
     });
 
@@ -90,7 +111,7 @@ export class PdfServiceService {
     });
 
     // Adicionar Hora de Entrada
-    firstPage.drawText(` Hora Entrada / Hora saída :  ${this.horaEntradaInput}  /`, {
+    firstPage.drawText(`Hora Entrada / Hora saída :  ${this.horaEntradaInput} /  `, {
       x: width * 0.1,
       y: height * 0.118,
       size: 11,
