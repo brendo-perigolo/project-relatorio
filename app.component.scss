@@ -1,0 +1,72 @@
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .menu {
+    width: 100%;
+  }
+  .lista {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 5px;
+  }
+
+  .relatorio{
+    width: 95%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  
+    
+  }
+
+
+  .obs {
+    width: 100%;
+    padding: 10px;
+  }
+
+  button {
+    box-shadow: 5px 6px 10px -3px rgba(0, 0, 0, 0.64);
+    -webkit-box-shadow: 5px 6px 10px -3px rgba(0, 0, 0, 0.64);
+    -moz-box-shadow: 5px 6px 10px -3px rgba(0, 0, 0, 0.64);
+  }
+
+  .assinatura {
+    padding: 10px;
+  }
+
+  .finalizar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.foot {
+  width: 100%;
+  height: 32px;
+  margin-top: 40px;
+  background-color: #b8b4b44f; /* Exemplo de estilo para o rodapé */
+  padding: 5px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.btn-grupo {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: start;
+  justify-content: start;
+  
+}
