@@ -1,7 +1,6 @@
 <div class="contain">
   <div class="conteudo">
     <!-- LISTA -->
-
     @if (showLista === true) {
     <div class="listas">
       <h2>Ordem de Serviço</h2>
@@ -87,26 +86,25 @@
 
     } @if (showRelatorio === true) {
 
-    <div class="container">
-      <h5>Relatorio</h5>
-      <hr class="line" />
-
+    <div class="relatorio">
+  
       <div class="btn-grupo">
-        <hr />
-        <button (click)="showPadAssinatura()" class="btn btn-primary">Assinar</button>
-        <button (click)="showPageLista()" class="btn btn-danger">Voltar</button>
+        <hr class="line" />
+        <button (click)="showPadAssinatura()" class="btn btn-primary btn-lg ">Assinar</button>
+        <button (click)="showPageLista()" class="btn btn-danger btn-lg">Voltar</button>
+        <hr>
       </div>
+      <hr class="line" />
       <div class="lista">
         @if (listaConfig.length >0) {
         <h4>Configuraçoes Executadas :</h4>
         @for (item of listaConfig; track $index) {
         <li>{{item}}</li>
         } }
-        <hr class="line" />
 
         @if (listaTreinamento.length > 0) {
         <div class="lista">
-          <hr class="line" />
+         
           <h4>Treinamento Repassado :</h4>
           @for (item of listaTreinamento; track $index) {
           <li>{{item}}</li>
@@ -141,7 +139,7 @@
     @if (finalizar === true) {
     <div class="finalizar">
       <h5>Finalizar</h5>
-
+      
       <input
         type="text"
         placeholder="Responsavel"
@@ -149,13 +147,18 @@
         id="nameInput"
         [(ngModel)]="responsavel"
       />
-      <input
+
+      <div>
+        <input
+        aria-placeholder="Hora entrada"
         type="time"
         placeholder="Entrada"
         class="form-control"
         id="nameInput"
         [(ngModel)]="entrada"
       />
+      </div>
+    
       <input type="file" class="form-control" id="fileInput" (change)="onFileSelected($event)" />
       <button type="button" class="btn btn-primary" (click)="processarPdf()">
         <i class="fa-solid fa-print"></i> Salvar PDF
